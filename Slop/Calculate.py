@@ -3,14 +3,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import trange
 
-def cal_gradient_horizon(nums, x, y):
-    ans = nums[x-1][y+1] + 2*nums[x-1][y+1] + nums[x+1][y+1] + \
-        nums[x-1][y-1]
+
+def cal_gradient_horizon(nums, x, y, x_cellsize):
+    ans = (nums[x - 1][y + 1] + 2 * nums[x - 1][y + 1] + nums[x + 1][y + 1] -
+           (nums[x - 1][y - 1] + 2 * nums[x][y - 1] + nums[x + 1][y - 1])) \
+          / (8 * x_cellsize)
+    return ans
 
 
-def cal_gradient_vertical(nums, x, y):
-    pass
-
+def cal_gradient_vertical(nums, x, y, y_cellsize):
+    ans = (nums[x - 1][y + 1] + 2 * nums[x - 1][y + 1] + nums[x + 1][y + 1] -
+           (nums[x - 1][y - 1] + 2 * nums[x][y - 1] + nums[x + 1][y - 1])) \
+          / (8 * y_cellsize)
+    return ans
 
 
 def window3x3(arr, shape=(3, 3)):
@@ -27,7 +32,6 @@ def window3x3(arr, shape=(3, 3)):
 
 
 def gradient(XYZ_file, min=0, max=15, figsize=(15, 10), **kwargs):
-
     """
 
     :param XYZ_file: XYZ file in the following format: x,y,z (inlcuding headers)
