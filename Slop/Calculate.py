@@ -26,34 +26,42 @@ def cal_single_point_slope(nums, height, width, x, y, x_cellsize, y_cellsize):
         return 0.0
     dzdx = cal_gradient_horizon(nums, x, y, x_cellsize)
     dzdy = cal_gradient_vertical(nums, x, y, y_cellsize)
-    ans = math.atan(math.sqrt(dzdx ** 2 + dzdy ** 2)) * 57.29578
+    degree = math.atan(math.sqrt(dzdx ** 2 + dzdy ** 2)) * 57.29578
+    ans = math.tan(degree * 3.1415926 / 180) * 100
     return ans
 
 
-def cal_slope(nums):
+def cal_slope(nums, size):
     m = len(nums)
     n = len(nums[0])
     slope_array = np.zeros((m, n), dtype=float)
     for i in range(m):
         for j in range(n):
-            slope = cal_single_point_slope(nums, m, n, i, j, 5, 5)
-            if slope > 2:
-                slope_array[i][j] = slope
+            slope = cal_single_point_slope(nums, m, n, i, j, size, size)
+
+            # slope_array[i][j] = slope
+
+            if slope > 15:
+                slope_array[i][j] = 20
+            # elif slope > 3:
+            #     slope_array[i][j] = 3
             else:
-                slope_array[i][j] = 0
+                slope_array[i][j] = slope
+
             # if slope > 2:
-            #     slope_array[i][j] = 8
+            #     slope_array[i][j] = slope
             # else:
             #     slope_array[i][j] = 0
     return slope_array
 
 
 if __name__ == '__main__':
-    # nums = np.array([[50, 45, 50],
-    #                  [30, 30, 30],
-    #                  [8, 10, 10]])
-    nums = np.random.rand(20, 20)
+    nums = np.array([[50, 45, 50],
+                     [30, 30, 30],
+                     [8, 10, 10]])
+    # nums = np.random.rand(20, 20)
     slope = cal_slope(nums)
+    print(slope)
 
     im2 = plt.matshow(slope, norm=matplotlib.colors.Normalize(vmin=0, vmax=8, clip=False))  # 画彩色图
     # im2 = plt.matshow(slope, cmap=plt.cm.gray)  # 画灰度图

@@ -8,6 +8,8 @@ open_list = []
 close_list = []
 
 
+# __all__ = ['Position','Msg','Board','IsInBoard','SearchPath']
+
 class Position:
     x = 0
     y = 0
