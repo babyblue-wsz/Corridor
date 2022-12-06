@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QAction
 from PyQt5.QtGui import QIcon
 from UI.Segmentation import Segmentation
 from UI.OriginMainWindow import OriginMainWindow
+from UI.Corridor import Corridor
 
 
 class MyWidget(QMainWindow):
@@ -18,10 +19,9 @@ class MyWidget(QMainWindow):
 
         # todo 开发时暂时用语义分割作为主界面
         self.origin_main_window = OriginMainWindow()
-        # self.setCentralWidget(self.origin_main_window)
+        self.setCentralWidget(self.origin_main_window)
         self.segmentationUI = Segmentation()
-        self.setCentralWidget(self.segmentationUI)
-
+        self.corridorUI = Corridor()
 
     def set_menu_bar(self):
         # 创建顶部菜单栏。addMenu()函数创建一级，addAction()函数创建子菜单。
@@ -35,10 +35,14 @@ class MyWidget(QMainWindow):
         self.functions = self.menuBar().addMenu('工具箱')
         self.segmentation = QAction('语义分割', self)
         self.recognition = QAction('图像识别', self)
+        self.corridor = QAction('廊带规划', self)
         self.functions.addAction(self.segmentation)
         self.functions.addAction(self.recognition)
+        self.functions.addAction(self.corridor)
         # todo 当切到“设置”UI再切到“语义分割”UI时报错
         self.segmentation.triggered.connect(lambda: self.show_child_UI(self.segmentationUI))
+
+        self.corridor.triggered.connect(lambda: self.show_child_UI(self.corridorUI))
 
     def show_child_UI(self, childUI):
         self.setCentralWidget(childUI)
